@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { NAV_LINKS, LOGO_URL } from '../constants';
-import { Icon } from './Icons';
+import { NAV_LINKS, LOGO_URL } from '../constants.js';
+import { Icon } from './Icons.js';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);

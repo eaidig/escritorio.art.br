@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Navbar } from './components/Navbar';
-import { Section } from './components/Section';
-import { Icon } from './components/Icons';
-import { SERVICES, PROJECTS, PRODUCTS, TESTIMONIALS, LOGO_URL, ARTIST_IMAGE_URL } from './constants';
+import React, { useState, useMemo } from 'react';
+import { Navbar } from './components/Navbar.js';
+import { Section } from './components/Section.js';
+import { Icon } from './components/Icons.js';
+import { SERVICES, PROJECTS, PRODUCTS, TESTIMONIALS, LOGO_URL, ARTIST_IMAGE_URL } from './constants.js';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('Todos');
@@ -22,11 +22,11 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-slate-950 text-slate-200">
       <Navbar />
 
       <main>
-        {/* HERO - Cyberpunk Elegance */}
+        {/* HERO */}
         <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
           <div className="absolute inset-0 z-0">
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-900/20 blur-[120px] rounded-full animate-pulse"></div>
@@ -70,7 +70,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* SERVICES - High-End Cards */}
+        {/* SERVICES */}
         <Section id="services" className="bg-brand-950/50">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-brand-500 font-bold tracking-[0.3em] uppercase text-sm mb-4">Nossa Expertise</h2>
@@ -79,7 +79,7 @@ export default function App() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SERVICES.map((s, idx) => (
+            {SERVICES.map((s) => (
               <div key={s.id} className="group p-8 glass rounded-[2rem] hover:border-brand-500/50 transition-all duration-500 hover:-translate-y-2 flex flex-col items-start">
                 <div className="w-16 h-16 bg-brand-900/50 text-brand-400 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-brand-500 group-hover:text-white transition-all shadow-lg">
                   <Icon name={s.iconName} size={30} />
@@ -91,14 +91,25 @@ export default function App() {
           </div>
         </Section>
 
-        {/* ARTIST PROFILE - Split Layout */}
+        {/* ABOUT / ARTIST */}
         <Section id="about" className="overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <div className="relative">
-              <div className="absolute -inset-10 bg-brand-500/10 blur-[100px] rounded-full animate-pulse"></div>
+            <div className="relative group">
+              <div className="absolute -inset-10 bg-brand-500/10 blur-[100px] rounded-full animate-pulse opacity-60 group-hover:opacity-100 transition-opacity"></div>
               <div className="relative rounded-[3rem] overflow-hidden border border-white/10 aspect-square lg:aspect-[4/5] shadow-2xl">
                 <img src={ARTIST_IMAGE_URL} alt="Dhai Maús" className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-1000" />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-transparent to-transparent"></div>
+                
+                {/* Instagram Floating Link */}
+                <a 
+                  href="https://instagram.com/dhaimaus" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="absolute bottom-10 right-10 z-20 bg-brand-600 hover:bg-brand-500 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center border border-white/20"
+                >
+                  <Icon name="Instagram" size={24} />
+                </a>
+
                 <div className="absolute bottom-10 left-10 right-10">
                   <p className="text-brand-400 font-bold uppercase tracking-widest text-xs mb-2">Diretora Criativa</p>
                   <h4 className="text-4xl font-serif font-bold text-white">Dhai Maús</h4>
@@ -115,16 +126,11 @@ export default function App() {
                 <p>Desde 2018, o Escritório de Arte & Cultura atua como o braço estratégico de artistas e coletivos que buscam escala e profissionalismo. Sob a liderança de Dhai Maús, unimos a sensibilidade artística ao rigor técnico da gestão pública e privada.</p>
                 <p>Especialistas em projetos inclusivos, garantimos que a cultura chegue a todos através de consultorias profundas em acessibilidade.</p>
               </div>
-              <div className="flex gap-4 pt-4">
-                <a href="https://instagram.com/dhaimaus" target="_blank" className="flex items-center gap-3 glass px-6 py-3 rounded-full hover:bg-white/10 transition-all font-semibold">
-                  <Icon name="Instagram" size={20} /> @dhaimaus
-                </a>
-              </div>
             </div>
           </div>
         </Section>
 
-        {/* PORTFOLIO - Modern Masonry/Grid */}
+        {/* PORTFOLIO */}
         <Section id="portfolio" className="bg-slate-900/40">
           <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-16">
             <div className="max-w-xl">
@@ -158,24 +164,23 @@ export default function App() {
           </div>
         </Section>
 
-        {/* PRODUCTS - Editorial Style */}
+        {/* PRODUCTS */}
         <Section id="products">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6">Loja Cultural</h2>
+            <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6">Produtos & Obras</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">Publicações e obras exclusivas que expandem os horizontes da arte e do bem-estar.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-12">
             {PRODUCTS.map(prod => (
               <div key={prod.id} className="group flex flex-col">
                 <div className="relative rounded-[2.5rem] overflow-hidden aspect-[3/4] mb-8 border border-white/10 shadow-2xl">
-                  <img src={prod.imageUrl} alt={prod.title} className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000" />
+                  <img src={prod.imageUrl} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000" />
                   <div className="absolute top-6 left-6 px-4 py-1 bg-white text-slate-950 text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
                     {prod.type}
                   </div>
-                  <div className="absolute inset-0 bg-brand-600/0 group-hover:bg-brand-600/20 transition-colors pointer-events-none"></div>
                 </div>
                 <h4 className="text-2xl font-bold text-white mb-6 group-hover:text-brand-400 transition-colors min-h-[4rem]">{prod.title}</h4>
-                <a href={prod.link} target="_blank" className="inline-flex items-center justify-center gap-3 w-full py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-brand-600 hover:border-brand-500 transition-all font-bold text-sm tracking-widest uppercase">
+                <a href={prod.link} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-3 w-full py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-brand-600 hover:border-brand-500 transition-all font-bold text-sm tracking-widest uppercase">
                   Adquirir Obra <Icon name="ExternalLink" size={16} />
                 </a>
               </div>
@@ -183,7 +188,7 @@ export default function App() {
           </div>
         </Section>
 
-        {/* CONTACT - Conversion Focus */}
+        {/* CONTACT */}
         <Section id="contact" className="relative">
           <div className="max-w-5xl mx-auto glass rounded-[3rem] overflow-hidden shadow-2xl border-white/10">
             <div className="grid md:grid-cols-2">
@@ -225,15 +230,6 @@ export default function App() {
                       <input required type="email" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-brand-500 transition-colors" placeholder="nome@email.com" />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Assunto</label>
-                      <select className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-brand-500 transition-colors appearance-none">
-                        <option className="bg-slate-900">Captação de Recursos</option>
-                        <option className="bg-slate-900">Gestão de Projetos</option>
-                        <option className="bg-slate-900">Acessibilidade</option>
-                        <option className="bg-slate-900">Outros</option>
-                      </select>
-                    </div>
-                    <div>
                       <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Mensagem</label>
                       <textarea required rows={4} className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-brand-500 transition-colors" placeholder="Conte-nos um pouco sobre sua ideia..."></textarea>
                     </div>
@@ -248,12 +244,11 @@ export default function App() {
         </Section>
       </main>
 
-      {/* FOOTER - Professional & Clean */}
       <footer className="bg-brand-950 pt-24 pb-12 border-t border-white/5">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-12 gap-16 mb-20">
             <div className="md:col-span-5 flex flex-col gap-8">
-              <img src={LOGO_URL} alt="Logo" className="h-12 w-auto object-contain self-start opacity-90" />
+              <img src={LOGO_URL} alt="Logo" className="h-16 w-auto object-contain self-start opacity-90" />
               <p className="text-slate-400 text-lg leading-relaxed max-w-sm">
                 Escritório de Arte & Cultura: Excelência em gestão, compromisso com a arte e foco total na democratização do acesso cultural.
               </p>
@@ -269,8 +264,8 @@ export default function App() {
             <div className="md:col-span-3">
               <h5 className="text-white font-black uppercase text-xs tracking-widest mb-8">Empresa</h5>
               <ul className="space-y-4">
-                {['Início', 'Quem Somos', 'Serviços', 'Portfólio', 'Produtos'].map(l => (
-                  <li key={l}><a href={`#${l.toLowerCase().replace(' ', '')}`} className="text-slate-500 hover:text-brand-400 transition-colors font-medium">{l}</a></li>
+                {['hero', 'about', 'services', 'portfolio', 'products'].map(l => (
+                  <li key={l}><a href={`#${l}`} className="text-slate-500 hover:text-brand-400 transition-colors font-medium capitalize">{l === 'hero' ? 'Início' : l}</a></li>
                 ))}
               </ul>
             </div>
@@ -278,16 +273,11 @@ export default function App() {
             <div className="md:col-span-4">
               <h5 className="text-white font-black uppercase text-xs tracking-widest mb-8">Informações Legais</h5>
               <p className="text-slate-500 text-sm mb-6">Atuamos em conformidade com as principais leis de incentivo à cultura do Brasil (Lei Rouanet, Paulo Gustavo, Aldir Blanc).</p>
-              <div className="flex flex-col gap-2 text-sm">
-                <a href="#" className="text-slate-400 hover:text-white transition-colors">Termos de Uso</a>
-                <a href="#" className="text-slate-400 hover:text-white transition-colors">Privacidade</a>
-              </div>
             </div>
           </div>
           
-          <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-600 text-xs tracking-widest uppercase font-bold">
+          <div className="pt-8 border-t border-white/5 text-center text-slate-600 text-xs tracking-widest uppercase font-bold">
             <p>&copy; {new Date().getFullYear()} Escritório de Arte & Cultura. Todos os direitos reservados.</p>
-            <p>Desenvolvido com excelência estratégica</p>
           </div>
         </div>
       </footer>

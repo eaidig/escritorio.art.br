@@ -1,6 +1,5 @@
-import { Service, Project, Product, Testimonial } from './types';
+import { Service, Project, Product, Testimonial } from './types.js';
 
-// RECURSOS OTIMIZADOS
 export const LOGO_URL = "https://storage.googleapis.com/digli-servidor-de-arquivos-de-apps/escritorio.art.br/optimized-escritorio-logo-rgb-png-roxo.webp";
 export const ARTIST_IMAGE_URL = "https://storage.googleapis.com/digli-servidor-de-arquivos-de-apps/escritorio.art.br/mulher-artista-sorrindo-pincel-estudio-arte.webp";
 
@@ -81,10 +80,10 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '2',
-    type: 'GUIA PRÁTICO',
+    type: 'LIVRO',
     title: 'O Poder Terapêutico de Cultivar Suculentas',
     imageUrl: 'https://storage.googleapis.com/digli-servidor-de-arquivos-de-apps/escritorio.art.br/optimized-opoderterapeuticodocultivodesuculentas.webp',
-    link: 'https://wa.me/5551981028246?text=Olá,%20tenho%20interesse%20no%20livro%20de%20suculentas!',
+    link: 'https://wa.me/5551981028246?text=Quero%20comprar%20seu%20livro!',
   },
   {
     id: '3',
