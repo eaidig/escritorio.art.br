@@ -1,46 +1,108 @@
-import React, { useState } from 'react';
-import { Navbar } from './components/Navbar.js';
-import { Section } from './components/Section.js';
-import { Icon } from './components/Icons.js';
-import { SERVICES, PROJECTS, PRODUCTS, TESTIMONIALS, LOGO_URL, ARTIST_IMAGE_URL } from './constants.js';
+import React, { useState, useEffect } from 'react';
+import * as Lucide from 'lucide-react';
+import { SERVICES, PROJECTS, PRODUCTS, LOGO_URL, ARTIST_IMAGE_URL, NAV_LINKS } from './constants.js';
+
+// --- Internal Components for Simplicity ---
+
+const Icon = ({ name, size = 24, className = "" }: { name: string, size?: number, className?: string }) => {
+  const IconComponent = (Lucide as any)[name];
+  if (!IconComponent) return null;
+  return <IconComponent size={size} className={className} />;
+};
+
+// Fixed Section component: made children optional to satisfy strict JSX prop checking in some environments
+const Section = ({ id, children, className = "" }: { id: string, children?: React.ReactNode, className?: string }) => (
+  <section id={id} className={`py-20 md:py-32 px-6 ${className}`}>
+    <div className="max-w-7xl mx-auto">
+      {children}
+    </div>
+  </section>
+);
+
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-slate-950/90 backdrop-blur-md border-b border-white/10' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="#hero" className="flex-shrink-0">
+          <img src={LOGO_URL} alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
+        </a>
+        
+        <div className="hidden md:flex gap-8">
+          {NAV_LINKS.map(link => (
+            <a key={link.label} href={link.href} className="text-sm font-semibold text-slate-300 hover:text-brand-400 transition-colors uppercase tracking-widest">
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-white">
+          <Icon name={isMenuOpen ? 'X' : 'Menu'} />
+        </button>
+      </div>
+
+      {isMenuOpen && (
+        <div className="md:hidden bg-slate-900 border-b border-white/10 p-6 flex flex-col gap-4">
+          {NAV_LINKS.map(link => (
+            <a key={link.label} href={link.href} onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-white">
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+};
+
+// --- Main Application ---
 
 export default function App() {
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success'>('idle');
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('sending');
     setTimeout(() => setFormStatus('success'), 1500);
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen selection:bg-brand-500/30">
       <Navbar />
 
       <main>
-        {/* HERO SECTION */}
+        {/* HERO */}
         <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-          <div className="absolute inset-0 z-0">
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-900/30 blur-[150px] rounded-full"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-900/30 blur-[150px] rounded-full"></div>
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-brand-900/20 to-transparent"></div>
+            <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-brand-600/10 blur-[120px] rounded-full"></div>
+            <div className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-indigo-600/10 blur-[120px] rounded-full"></div>
           </div>
 
-          <div className="container mx-auto px-6 relative z-10 text-center">
-            <h1 className="text-5xl md:text-8xl font-serif font-bold text-white mb-8 leading-tight tracking-tight">
-              Gestão de Arte <br />
-              <span className="text-gradient italic font-serif">Profissional.</span>
+          <div className="relative z-10 text-center px-6">
+            <div className="inline-block px-4 py-1 rounded-full glass mb-8 text-brand-400 text-[10px] font-black tracking-[0.3em] uppercase">
+              Escritório de Arte & Cultura
+            </div>
+            <h1 className="text-5xl md:text-8xl font-serif font-bold text-white mb-8 leading-tight">
+              A Arte de <br />
+              <span className="text-gradient italic">Realizar.</span>
             </h1>
-            
-            <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-              Realizamos o planejamento e a produção completa do seu projeto cultural com foco em leis de incentivo e acessibilidade.
+            <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12">
+              Transformamos sonhos criativos em estruturas sólidas. Consultoria técnica, leis de incentivo e produção de alto impacto.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <a href="#contact" className="px-10 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-full transition-all hover:scale-105 shadow-xl shadow-brand-600/20">
-                Iniciar meu Projeto
+                Iniciar Projeto
               </a>
-              <a href="#products" className="px-10 py-4 border border-white/10 hover:bg-white/5 text-white font-bold rounded-full transition-all">
-                Ver Obras
+              <a href="#services" className="px-10 py-4 border border-white/10 hover:bg-white/5 text-white font-bold rounded-full transition-all">
+                Conhecer Serviços
               </a>
             </div>
           </div>
@@ -48,66 +110,64 @@ export default function App() {
 
         {/* SERVICES */}
         <Section id="services" className="bg-slate-900/30">
-          <div className="text-center mb-16">
-            <h2 className="text-brand-400 font-bold uppercase tracking-widest text-sm mb-4">Especialidades</h2>
-            <h3 className="text-3xl md:text-5xl font-serif text-white">O que fazemos por você</h3>
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-serif text-white mb-4">Nossa Expertise</h2>
+            <div className="w-24 h-1 bg-brand-600 mx-auto rounded-full"></div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SERVICES.map((s) => (
-              <div key={s.id} className="p-8 glass rounded-3xl hover:border-brand-500/50 transition-all group">
-                <div className="w-14 h-14 bg-brand-900/50 text-brand-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-600 group-hover:text-white transition-all">
+            {SERVICES.map(s => (
+              <div key={s.id} className="p-8 glass rounded-[2rem] hover:border-brand-500/50 transition-all group">
+                <div className="w-14 h-14 bg-brand-900/50 text-brand-400 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-brand-600 group-hover:text-white transition-all">
                   <Icon name={s.iconName} size={28} />
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">{s.title}</h4>
+                <h4 className="text-xl font-bold text-white mb-4">{s.title}</h4>
                 <p className="text-slate-400 text-sm leading-relaxed">{s.description}</p>
               </div>
             ))}
           </div>
         </Section>
 
-        {/* ARTIST / ABOUT */}
+        {/* ABOUT */}
         <Section id="about">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div className="relative group">
               <div className="absolute -inset-4 bg-brand-600/20 blur-2xl rounded-full"></div>
-              <img src={ARTIST_IMAGE_URL} alt="Artista Dhai Maús" className="relative rounded-[2rem] w-full aspect-[4/5] object-cover shadow-2xl border border-white/10" />
+              <img src={ARTIST_IMAGE_URL} alt="Dhai Maús" className="relative rounded-[2.5rem] w-full aspect-[4/5] object-cover shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-700" />
             </div>
             <div className="space-y-8">
-              <h2 className="text-4xl md:text-6xl font-serif text-white leading-tight">Dhai Maús</h2>
-              <p className="text-xl text-brand-300 italic">"Conectando a essência da arte com a viabilidade técnica."</p>
-              <div className="space-y-4 text-slate-400 leading-relaxed">
-                <p>O Escritório de Arte & Cultura é liderado por Dhai Maús, artista visual e produtora focada em democratizar o acesso à cultura através de projetos impactantes.</p>
-                <p>Com vasta experiência em editais e leis de fomento, garantimos que sua obra encontre o suporte necessário para brilhar no cenário nacional e internacional.</p>
+              <h2 className="text-5xl md:text-7xl font-serif text-white leading-tight">Dhai Maús</h2>
+              <p className="text-2xl text-brand-300 italic">"Gestão Cultural com Alma Artística."</p>
+              <div className="space-y-6 text-slate-400 leading-relaxed text-lg">
+                <p>O Escritório de Arte & Cultura nasceu da necessidade de unir o rigor técnico da gestão pública à sensibilidade da criação artística.</p>
+                <p>Sob a direção de Dhai Maús, especialista em leis de incentivo e acessibilidade, oferecemos soluções completas para que o artista foque no que realmente importa: sua obra.</p>
               </div>
-              <div className="flex gap-4">
-                <a href="https://instagram.com/dhaimaus" target="_blank" className="flex items-center gap-2 text-brand-400 hover:text-white transition-colors">
-                  <Icon name="Instagram" /> @dhaimaus
-                </a>
-              </div>
+              <a href="https://instagram.com/dhaimaus" target="_blank" className="inline-flex items-center gap-3 text-brand-400 font-bold hover:text-white transition-colors">
+                <Icon name="Instagram" /> Seguir no Instagram
+              </a>
             </div>
           </div>
         </Section>
 
-        {/* PRODUCTS (BOOKS) */}
-        <Section id="products" className="bg-slate-900/50">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Livraria & Obras</h2>
-            <p className="text-slate-400">Publicações e produções exclusivas do nosso selo.</p>
+        {/* PRODUCTS */}
+        <Section id="products" className="bg-slate-900/40">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-serif text-white mb-4">Livraria</h2>
+            <p className="text-slate-400">Obras selecionadas do nosso catálogo de produção.</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
             {PRODUCTS.map(prod => (
-              <div key={prod.id} className="group glass rounded-[2.5rem] overflow-hidden flex flex-col items-center p-8 text-center transition-all hover:-translate-y-2">
-                <div className="w-full aspect-[3/4] mb-8 overflow-hidden rounded-2xl border border-white/5">
-                  <img src={prod.imageUrl} alt={prod.title} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+              <div key={prod.id} className="group glass p-8 rounded-[3rem] text-center flex flex-col">
+                <div className="aspect-[3/4] overflow-hidden rounded-2xl mb-8 shadow-2xl">
+                  <img src={prod.imageUrl} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
                 </div>
-                <span className="text-brand-400 font-bold text-xs uppercase mb-2">{prod.type}</span>
+                <span className="text-brand-400 font-black text-[10px] uppercase tracking-widest mb-2">{prod.type}</span>
                 <h4 className="text-2xl font-bold text-white mb-8 min-h-[4rem]">{prod.title}</h4>
                 <a 
                   href={prod.link} 
                   target="_blank" 
                   className="w-full py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-2xl flex items-center justify-center gap-2 transition-all"
                 >
-                  {prod.link.includes('wa.me') ? 'Quero comprar' : 'Saber mais'} <Icon name="ExternalLink" size={18} />
+                  {prod.link.includes('wa.me') ? 'Comprar no WhatsApp' : 'Comprar agora'} <Icon name="ExternalLink" size={18} />
                 </a>
               </div>
             ))}
@@ -116,21 +176,26 @@ export default function App() {
 
         {/* CONTACT */}
         <Section id="contact">
-          <div className="max-w-4xl mx-auto glass rounded-[3rem] p-12 md:p-20 text-center">
-            <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">Vamos conversar?</h2>
-            <p className="text-slate-400 mb-12 max-w-md mx-auto">Conte-nos sobre seu projeto cultural ou artístico. Responderemos o mais breve possível.</p>
+          <div className="max-w-4xl mx-auto glass rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-600/10 blur-[100px] rounded-full"></div>
             
+            <div className="relative z-10 text-center mb-12">
+              <h2 className="text-4xl md:text-6xl font-serif text-white mb-6">Contate-nos</h2>
+              <p className="text-slate-400">Pronto para dar o próximo passo na sua carreira cultural?</p>
+            </div>
+
             {formStatus === 'success' ? (
-              <div className="p-8 bg-green-500/10 text-green-400 rounded-2xl border border-green-500/20">
-                <Icon name="CheckCircle2" size={48} className="mx-auto mb-4" />
-                <h4 className="font-bold text-xl">Mensagem enviada com sucesso!</h4>
+              <div className="bg-green-500/10 border border-green-500/20 p-10 rounded-3xl text-center">
+                <Icon name="CheckCircle2" className="text-green-500 mx-auto mb-4" size={48} />
+                <h4 className="text-white font-bold text-2xl">Mensagem Enviada!</h4>
+                <p className="text-slate-400 mt-2">Em breve entraremos em contato.</p>
               </div>
             ) : (
-              <form onSubmit={handleContactSubmit} className="grid gap-6 max-w-lg mx-auto">
-                <input required type="text" placeholder="Seu Nome" className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:border-brand-500" />
-                <input required type="email" placeholder="E-mail" className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:border-brand-500" />
-                <textarea required rows={4} placeholder="Sobre seu projeto..." className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:border-brand-500"></textarea>
-                <button disabled={formStatus === 'sending'} type="submit" className="w-full py-5 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-2xl transition-all disabled:opacity-50">
+              <form onSubmit={handleSubmit} className="grid gap-6 max-w-lg mx-auto">
+                <input required type="text" placeholder="Seu Nome Completo" className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white focus:border-brand-500 outline-none transition-all" />
+                <input required type="email" placeholder="Seu melhor e-mail" className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white focus:border-brand-500 outline-none transition-all" />
+                <textarea required rows={4} placeholder="Conte-nos sobre seu projeto..." className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white focus:border-brand-500 outline-none transition-all"></textarea>
+                <button disabled={formStatus === 'sending'} type="submit" className="w-full py-5 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-2xl shadow-xl shadow-brand-600/20 transition-all disabled:opacity-50">
                   {formStatus === 'sending' ? 'Enviando...' : 'Enviar Mensagem'}
                 </button>
               </form>
@@ -139,18 +204,15 @@ export default function App() {
         </Section>
       </main>
 
-      <footer className="bg-slate-950 pt-20 pb-10 border-t border-white/10">
-        <div className="container mx-auto px-6 text-center">
-          <img src={LOGO_URL} alt="Logo" className="h-20 mx-auto mb-8 object-contain" />
-          <p className="text-slate-500 mb-8 max-w-sm mx-auto">Escritório de Arte & Cultura: Transparência e profissionalismo na gestão cultural.</p>
-          <div className="flex justify-center gap-6 mb-12">
-            <a href="https://instagram.com/dhaimaus" className="text-slate-400 hover:text-brand-400 transition-colors"><Icon name="Instagram" /></a>
-            <a href="mailto:contato@escritorio.art.br" className="text-slate-400 hover:text-brand-400 transition-colors"><Icon name="Mail" /></a>
-          </div>
-          <div className="text-xs text-slate-700 font-bold uppercase tracking-widest pt-8 border-t border-white/5">
-            &copy; {new Date().getFullYear()} Escritório de Arte & Cultura.
-          </div>
+      <footer className="bg-slate-950 pt-24 pb-12 border-t border-white/5 text-center">
+        <img src={LOGO_URL} alt="Logo" className="h-16 mx-auto mb-8 opacity-80" />
+        <div className="flex justify-center gap-8 mb-12">
+          <a href="https://instagram.com/dhaimaus" className="text-slate-500 hover:text-white transition-all"><Icon name="Instagram" /></a>
+          <a href="mailto:contato@escritorio.art.br" className="text-slate-500 hover:text-white transition-all"><Icon name="Mail" /></a>
         </div>
+        <p className="text-slate-600 text-xs font-black uppercase tracking-[0.4em]">
+          &copy; {new Date().getFullYear()} Escritório de Arte & Cultura. Todos os direitos reservados.
+        </p>
       </footer>
     </div>
   );
