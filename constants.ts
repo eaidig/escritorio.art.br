@@ -7,7 +7,6 @@ export const NAV_LINKS = [
   { label: 'Início', href: '#hero' },
   { label: 'O Escritório', href: '#about' },
   { label: 'Serviços', href: '#services' },
-  { label: 'Portfólio', href: '#portfolio' },
   { label: 'Produtos', href: '#products' },
   { label: 'Contato', href: '#contact' },
 ];
@@ -16,25 +15,25 @@ export const SERVICES: Service[] = [
   {
     id: '1',
     title: 'Captação de Recursos',
-    description: 'Domínio técnico das Leis Rouanet, Paulo Gustavo e Aldir Blanc para viabilizar projetos com incentivo fiscal.',
+    description: 'Estratégias técnicas para Leis de Incentivo (Rouanet, Paulo Gustavo, Aldir Blanc).',
     iconName: 'Briefcase',
   },
   {
     id: '2',
-    title: 'Produção Executiva',
-    description: 'Gestão 360º: do planejamento logístico à coordenação de equipes em eventos de grande porte.',
+    title: 'Gestão e Produção',
+    description: 'Execução completa de eventos e projetos culturais com rigor técnico.',
     iconName: 'Users',
   },
   {
     id: '3',
     title: 'Prestação de Contas',
-    description: 'Segurança jurídica e contábil total com organização rigorosa para aprovação junto aos órgãos reguladores.',
+    description: 'Organização administrativa e contábil para aprovação junto aos órgãos públicos.',
     iconName: 'FileText',
   },
   {
     id: '4',
-    title: 'Acessibilidade 360º',
-    description: 'Consultoria e implementação de Libras, audiodescrição e infraestrutura inclusiva em projetos culturais.',
+    title: 'Consultoria de Acessibilidade',
+    description: 'Projetos inclusivos com Libras, Audiodescrição e infraestrutura adaptada.',
     iconName: 'Accessibility',
   },
 ];
@@ -54,26 +53,12 @@ export const PROJECTS: Project[] = [
     category: 'Eventos',
     imageUrl: 'https://images.unsplash.com/photo-1514525253361-bee8718a300a?auto=format&fit=crop&q=80&w=800',
   },
-  {
-    id: '3',
-    year: '2023',
-    title: 'Encorajamento Musical',
-    category: 'Educação',
-    imageUrl: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=800',
-  },
-  {
-    id: '4',
-    year: '2022',
-    title: 'Hip Hop Nas Escolas',
-    category: 'Social',
-    imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=800',
-  }
 ];
 
 export const PRODUCTS: Product[] = [
   {
     id: '1',
-    type: 'LIVRO FÍSICO',
+    type: 'LIVRO',
     title: 'A baleia na lagoa do violão',
     imageUrl: 'https://storage.googleapis.com/digli-servidor-de-arquivos-de-apps/escritorio.art.br/a-baleia-na-lagoa-do-violao-dhai-maus-capa.webp',
     link: 'https://dhaimaus.com.br/',
@@ -85,20 +70,13 @@ export const PRODUCTS: Product[] = [
     imageUrl: 'https://storage.googleapis.com/digli-servidor-de-arquivos-de-apps/escritorio.art.br/optimized-opoderterapeuticodocultivodesuculentas.webp',
     link: 'https://wa.me/5551981028246?text=Quero%20comprar%20seu%20livro!',
   },
-  {
-    id: '3',
-    type: 'COLETÂNEA',
-    title: 'Arte e Acessibilidade: Um Guia para Gestores',
-    imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800',
-    link: 'mailto:contato@escritorio.art.br',
-  },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
-    text: "Profissionalismo impecável. A gestão da Dhai Maús transformou a execução do nosso documentário em um processo leve e tecnicamente perfeito.",
+    text: "O Escritório de Arte & Cultura é fundamental para a viabilização de projetos complexos com segurança e excelência.",
     author: "Rodrigo Fontoura de Oliveira",
-    role: "Diretor de Cinema"
+    role: "Artista Visual"
   }
 ];
